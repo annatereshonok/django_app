@@ -4,98 +4,101 @@ from decimal import Decimal
 
 
 class Command(BaseCommand):
-    help = "Add test categories and products to the database"
+    help = "Заполняет базу тестовыми категориями и продуктами для Skystore"
 
     def handle(self, *args, **kwargs):
         Product.objects.all().delete()
         Category.objects.all().delete()
+        self.stdout.write(self.style.WARNING("Все категории и продукты удалены."))
 
+        # --- Категории для Skystore ---
         categories_data = [
-            {"name": "Электроника", "description": "Гаджеты и устройства"},
-            {"name": "Одежда", "description": "Мужская и женская одежда"},
-            {"name": "Книги", "description": "Художественная и научная литература"},
+            {
+                "name": "VS Code Plugins",
+                "description": "Расширения и утилиты для повышения продуктивности в VS Code.",
+            },
+            {
+                "name": "Django Templates",
+                "description": "Готовые шаблоны и компоненты для Django-проектов.",
+            },
+            {
+                "name": "Code Snippets & Utils",
+                "description": "Небольшие, но полезные куски кода для Python и JavaScript.",
+            },
         ]
 
         categories = {}
         for cat_data in categories_data:
-            category, _ = Category.objects.get_or_create(**cat_data)
+            category = Category.objects.create(**cat_data)
             categories[category.name] = category
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f"Категория: {category.name} добавлена или уже существует."
-                )
-            )
+            self.stdout.write(self.style.SUCCESS(f"✅ Категория создана: {category.name}"))
 
+        # --- Продукты ---
         products_data = [
             {
-                "name": "Смартфон XPhone 12",
-                "description": "Современный смартфон с OLED-дисплеем",
-                "price": Decimal("699.99"),
-                "category": categories["Электроника"],
+                "name": "Auto Import",
+                "description": "Плагин для VS Code, автоматически добавляющий импорты в Python-коде.",
+                "price": Decimal("3.99"),
+                "category": categories["VS Code Plugins"],
             },
             {
-                "name": "Наушники NoiseBeat",
-                "description": "Беспроводные наушники с шумоподавлением",
-                "price": Decimal("199.99"),
-                "category": categories["Электроника"],
+                "name": "Tailwind Class Helper",
+                "description": "Инструмент для быстрой генерации классов Tailwind в HTML.",
+                "price": Decimal("2.49"),
+                "category": categories["VS Code Plugins"],
             },
             {
-                "name": "Футболка Oversize",
-                "description": "Чёрная оверсайз футболка, хлопок",
-                "price": Decimal("24.99"),
-                "category": categories["Одежда"],
+                "name": "Django Admin Dark",
+                "description": "Темная тема для админки Django, совместимая с Bootstrap 5.",
+                "price": Decimal("4.99"),
+                "category": categories["Django Templates"],
             },
             {
-                "name": "Куртка зимняя",
-                "description": "Утеплённая парка с капюшоном",
-                "price": Decimal("129.90"),
-                "category": categories["Одежда"],
+                "name": "Login+Email Template",
+                "description": "Готовая аутентификация с подтверждением по почте и восстановлением пароля.",
+                "price": Decimal("6.99"),
+                "category": categories["Django Templates"],
             },
             {
-                "name": "Джинсы Straight Fit",
-                "description": "Синие джинсы прямого кроя",
-                "price": Decimal("59.50"),
-                "category": categories["Одежда"],
+                "name": "Stripe Snippet",
+                "description": "Простой сниппет для подключения Stripe в Django-проекте.",
+                "price": Decimal("1.99"),
+                "category": categories["Code Snippets & Utils"],
             },
             {
-                "name": "Рюкзак Urban",
-                "description": "Городской рюкзак с отделением под ноутбук",
-                "price": Decimal("49.99"),
-                "category": categories["Одежда"],
+                "name": "JWT Auth для DRF",
+                "description": "Мини-библиотека авторизации через JWT для Django REST Framework.",
+                "price": Decimal("3.50"),
+                "category": categories["Code Snippets & Utils"],
             },
             {
-                "name": "Преступление и наказание",
-                "description": "Роман Ф.М. Достоевского",
-                "price": Decimal("14.00"),
-                "category": categories["Книги"],
+                "name": "Meta Tags for SEO",
+                "description": "Утилита для добавления SEO-мета-тегов в Django-шаблоны.",
+                "price": Decimal("2.00"),
+                "category": categories["Django Templates"],
             },
             {
-                "name": "1984",
-                "description": "Роман-антиутопия Дж. Оруэлла",
-                "price": Decimal("12.00"),
-                "category": categories["Книги"],
+                "name": "Prettier Config",
+                "description": "Готовый конфиг Prettier + ESLint для фронтенд-проектов.",
+                "price": Decimal("1.00"),
+                "category": categories["Code Snippets & Utils"],
             },
             {
-                "name": "Гарри Поттер и философский камень",
-                "description": "Книга Дж. К. Роулинг",
-                "price": Decimal("18.75"),
-                "category": categories["Книги"],
+                "name": "Notebook Tools",
+                "description": "Плагин для удобной работы с Jupyter в VS Code.",
+                "price": Decimal("2.99"),
+                "category": categories["VS Code Plugins"],
             },
             {
-                "name": "Мастер и Маргарита",
-                "description": "Классика М. Булгакова",
-                "price": Decimal("15.00"),
-                "category": categories["Книги"],
+                "name": "Social Login Pack",
+                "description": "Быстрая интеграция входа через Google, GitHub и VK.",
+                "price": Decimal("5.49"),
+                "category": categories["Django Templates"],
             },
         ]
 
         for prod_data in products_data:
-            product, created = Product.objects.get_or_create(**prod_data)
-            if created:
-                self.stdout.write(
-                    self.style.SUCCESS(f"✔ Продукт добавлен: {product.name}")
-                )
-            else:
-                self.stdout.write(
-                    self.style.WARNING(f"⚠ Уже существует: {product.name}")
-                )
+            product = Product.objects.create(**prod_data)
+            self.stdout.write(self.style.SUCCESS(f"🛒 Продукт создан: {product.name}"))
+
+        self.stdout.write(self.style.SUCCESS("🎉 База успешно заполнена для Skystore!"))
