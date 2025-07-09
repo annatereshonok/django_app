@@ -1,0 +1,119 @@
+[
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Смартфон XPhone 12",
+        "description": "Современный смартфон с OLED-дисплеем",
+        "image": "",
+        "category": 1,
+        "price": "699.99",
+        "created_at": "2025-07-07T19:12:56.825Z",
+        "updated_at": "2025-07-07T19:12:56.825Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+        "name": "Наушники NoiseBeat",
+        "description": "Беспроводные наушники с шумоподавлением",
+        "image": "",
+        "category": 1,
+        "price": "199.99",
+        "created_at": "2025-07-07T19:12:56.828Z",
+        "updated_at": "2025-07-07T19:12:56.828Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Футболка Oversize",
+        "description": "Чёрная оверсайз футболка, хлопок",
+        "image": "",
+        "category": 2,
+        "price": "37.99",
+        "created_at": "2025-07-07T19:12:56.831Z",
+        "updated_at": "2025-07-07T21:24:06.104Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+        "name": "Джинсы Straight Fit",
+        "description": "Синие джинсы прямого кроя",
+        "image": "",
+        "category": 2,
+        "price": "59.50",
+        "created_at": "2025-07-07T19:12:56.835Z",
+        "updated_at": "2025-07-07T19:12:56.835Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+        "name": "Рюкзак Urban",
+        "description": "Городской рюкзак с отделением под ноутбук",
+        "image": "",
+        "category": 2,
+        "price": "49.99",
+        "created_at": "2025-07-07T19:12:56.838Z",
+        "updated_at": "2025-07-07T19:12:56.838Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 7,
+    "fields": {
+        "name": "Преступление и наказание",
+        "description": "Роман Ф.М. Достоевского",
+        "image": "",
+        "category": 3,
+        "price": "14.00",
+        "created_at": "2025-07-07T19:12:56.840Z",
+        "updated_at": "2025-07-07T19:12:56.840Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 8,
+    "fields": {
+        "name": "1984",
+        "description": "Роман-антиутопия Дж. Оруэлла",
+        "image": "",
+        "category": 3,
+        "price": "12.00",
+        "created_at": "2025-07-07T19:12:56.843Z",
+        "updated_at": "2025-07-07T19:12:56.843Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 9,
+    "fields": {
+        "name": "Гарри Поттер и философский камень",
+        "description": "Книга Дж. К. Роулинг",
+        "image": "",
+        "category": 3,
+        "price": "18.75",
+        "created_at": "2025-07-07T19:12:56.845Z",
+        "updated_at": "2025-07-07T19:12:56.845Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 10,
+    "fields": {
+        "name": "Мастер и Маргарита",
+        "description": "Классика М. Булгакова",
+        "image": "",
+        "category": 3,
+        "price": "15.00",
+        "created_at": "2025-07-07T19:12:56.847Z",
+        "updated_at": "2025-07-07T19:12:56.847Z"
+    }
+}
+]
