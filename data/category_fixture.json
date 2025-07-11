@@ -1,26 +1,26 @@
 [
 {
     "model": "catalog.category",
-    "pk": 1,
+    "pk": 7,
     "fields": {
-        "name": "Электроника",
-        "description": "Гаджеты и устройства"
+        "name": "VS Code Plugins",
+        "description": "Расширения и утилиты для повышения продуктивности в VS Code."
     }
 },
 {
     "model": "catalog.category",
-    "pk": 2,
+    "pk": 8,
     "fields": {
-        "name": "Одежда",
-        "description": "Мужская и женская одежда"
+        "name": "Django Templates",
+        "description": "Готовые шаблоны и компоненты для Django-проектов."
     }
 },
 {
     "model": "catalog.category",
-    "pk": 3,
+    "pk": 9,
     "fields": {
-        "name": "Книги",
-        "description": "Художественная и научная литература"
+        "name": "Code Snippets & Utils",
+        "description": "Небольшие, но полезные куски кода для Python и JavaScript."
     }
 }
 ]
