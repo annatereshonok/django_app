@@ -1,0 +1,45 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Все статьи блога</h1>
+
+    <a href="{% url 'blog:blog_create' %}" class="btn btn-success mb-3">Создать новую статью</a>
+
+    {% for blog in blogs %}
+        <div class="card mb-4 shadow-sm">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    {% if blog.preview %}
+                        <img src="{{ blog.preview.url }}" class="img-fluid mb-3" alt="{{ blog.title }}">
+                    {% else %}
+                        <img src="{% static 'img/default_photo.png' %}" class="card-img-top" alt="Нет изображения">
+                    {% endif %}
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body d-flex flex-column justify-content-between h-100">
+                        <div>
+                            <h4 class="card-title mb-2">
+                                <a href="{% url 'blog:blog_detail' blog.pk %}" class="text-decoration-none text-dark">
+                                    {{ blog.title }}
+                                </a>
+                            </h4>
+                            <p class="text-muted mb-2">{{ blog.date_created|date:"d.m.Y H:i" }}</p>
+                            <p class="card-text">{{ blog.content|truncatewords:30 }}</p>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary">
+                                👁 {{ blog.view_count }}{% if blog.view_count > 10 %} 🔥{% endif %}
+                            </span>
+                            <a href="{% url 'blog:blog_detail' blog.pk %}" class="btn btn-sm btn-outline-primary">Читать →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Нет опубликованных статей.</p>
+    {% endfor %}
+</div>
+{% endblock %}
