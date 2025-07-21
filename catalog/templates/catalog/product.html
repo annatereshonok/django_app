@@ -12,13 +12,25 @@
             {% endif %}
         </div>
         <div class="col-md-6">
-            <h1>{{ product.name }}</h1>
-            <p class="text-muted">{{ product.category.name }}</p>
-            <h3 class="text-success">{{ product.price }} $</h3>
-            <p>{{ product.description }}</p>
-            <p class="text-secondary">Создан: {{ product.created_at|date:"d M Y" }}</p>
-            <a href="#" class="btn btn-primary">Купить</a>
-            <a class="btn btn-outline-secondary" href="/">← Назад</a>
+            <div class="container d-flex flex-column justify-content-between" style="height: 100%;">
+                <div>
+                    <h1>{{ product.name }}</h1>
+                    <p class="text-muted">{{ product.category.name }}</p>
+                    <h3 class="text-success">{{ product.price }} $</h3>
+                    <p>{{ product.description }}</p>
+                    <p class="text-secondary">Создан: {{ product.created_at|date:"d M Y" }}</p>
+                </div>
+                <div class="container d-flex justify-content-between">
+                    <div>
+                        <a href="#" class="btn btn-primary">Купить</a>
+                        <a class="btn btn-outline-secondary" href="{% url 'catalog:catalog_update' product.pk%}">Редактировать</a>
+                        <a class="btn btn-danger" href="{% url 'catalog:catalog_delete' product.pk%}">Удалить</a>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-secondary" href="/">← Назад</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
