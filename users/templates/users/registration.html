@@ -1,0 +1,22 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">Регистрация</h2>
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="mb-3">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+    </form>
+    <p class="form-text text-center mt-3">
+        Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+    </p>
+</div>
+{% endblock %}

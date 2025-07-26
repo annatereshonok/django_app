@@ -7,9 +7,11 @@
 
 {% load static %}
 {% block content%}
-<div class="container mb-5">
-    <a class="btn btn-primary" href={% url 'catalog:catalog_create'%}> Создать новый продукт </a>
-</div>
+    {% if user.is_authenticated %}
+    <div class="container mb-5">
+        <a class="btn btn-primary" href={% url 'catalog:catalog_create'%}> Создать новый продукт </a>
+    </div>
+    {% endif %}
 
 <div class="container">
     {% for row in rows %}
