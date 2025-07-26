@@ -1,0 +1,16 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+    <h1 class="display-4">Skystore</h1>
+    <p class="lead">Добавить/Редактировать продукт</p>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{% url 'catalog:catalog_list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
