@@ -1,6 +1,9 @@
 from django.core.management.base import BaseCommand
 from catalog.models import Category, Product
 from decimal import Decimal
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Command(BaseCommand):
@@ -11,7 +14,16 @@ class Command(BaseCommand):
         Category.objects.all().delete()
         self.stdout.write(self.style.WARNING("Все категории и продукты удалены."))
 
-        # --- Категории для Skystore ---
+        # Создаём владельца
+        owner, created = User.objects.get_or_create(email="admin@skystore.local")
+        if created:
+            owner.set_password("admin123")
+            owner.is_staff = True
+            owner.is_superuser = True
+            owner.save()
+            self.stdout.write(self.style.SUCCESS("👤 Пользователь admin@skystore.local создан"))
+
+        # --- Категории ---
         categories_data = [
             {
                 "name": "VS Code Plugins",
@@ -53,52 +65,14 @@ class Command(BaseCommand):
                 "price": Decimal("4.99"),
                 "category": categories["Django Templates"],
             },
-            {
-                "name": "Login+Email Template",
-                "description": "Готовая аутентификация с подтверждением по почте и восстановлением пароля.",
-                "price": Decimal("6.99"),
-                "category": categories["Django Templates"],
-            },
-            {
-                "name": "Stripe Snippet",
-                "description": "Простой сниппет для подключения Stripe в Django-проекте.",
-                "price": Decimal("1.99"),
-                "category": categories["Code Snippets & Utils"],
-            },
-            {
-                "name": "JWT Auth для DRF",
-                "description": "Мини-библиотека авторизации через JWT для Django REST Framework.",
-                "price": Decimal("3.50"),
-                "category": categories["Code Snippets & Utils"],
-            },
-            {
-                "name": "Meta Tags for SEO",
-                "description": "Утилита для добавления SEO-мета-тегов в Django-шаблоны.",
-                "price": Decimal("2.00"),
-                "category": categories["Django Templates"],
-            },
-            {
-                "name": "Prettier Config",
-                "description": "Готовый конфиг Prettier + ESLint для фронтенд-проектов.",
-                "price": Decimal("1.00"),
-                "category": categories["Code Snippets & Utils"],
-            },
-            {
-                "name": "Notebook Tools",
-                "description": "Плагин для удобной работы с Jupyter в VS Code.",
-                "price": Decimal("2.99"),
-                "category": categories["VS Code Plugins"],
-            },
-            {
-                "name": "Social Login Pack",
-                "description": "Быстрая интеграция входа через Google, GitHub и VK.",
-                "price": Decimal("5.49"),
-                "category": categories["Django Templates"],
-            },
         ]
 
         for prod_data in products_data:
-            product = Product.objects.create(**prod_data)
+            product = Product.objects.create(
+                **prod_data,
+                owner=owner,
+                is_published=True
+            )
             self.stdout.write(self.style.SUCCESS(f"🛒 Продукт создан: {product.name}"))
 
         self.stdout.write(self.style.SUCCESS("🎉 База успешно заполнена для Skystore!"))

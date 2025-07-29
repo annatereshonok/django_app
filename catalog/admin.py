@@ -22,7 +22,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product_image', 'styled_name', 'colored_price', 'category', 'created_at')
+    list_display = ('id', 'owner', 'product_image', 'styled_name', 'colored_price', 'category', 'is_published', 'created_at')
     list_filter = ('category', 'created_at')
     search_fields = ('name', 'description')
     autocomplete_fields = ['category']
@@ -30,7 +30,7 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ['-created_at']
     fieldsets = (
         (None, {
-            'fields': ('name', 'description', 'category', 'price', 'image')
+            'fields': ('name', 'description', 'category', 'price', 'image', 'is_published')
         }),
         ('Системные данные', {
             'fields': ('created_at', 'updated_at', 'product_image'),

@@ -4,6 +4,7 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
+        <!-- Левая колонка с изображением -->
         <div class="col-md-6">
             {% if product.image %}
                 <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
@@ -11,25 +12,43 @@
                 <img src="{% static 'img/default_photo.png' %}" class="img-fluid" alt="Изображение товара отсутствует">
             {% endif %}
         </div>
-        <div class="col-md-6">
-            <div class="container d-flex flex-column justify-content-between" style="height: 100%;">
+
+        <!-- Правая колонка с информацией -->
+        <div class="col-md-6 d-flex flex-column justify-content-between">
+            <!-- Описание продукта -->
+            <div>
+                <h1>{{ product.name }}</h1>
+                <p class="text-muted">{{ product.category.name }}</p>
+                <h3 class="text-success">{{ product.price }} $</h3>
+                <p>{{ product.description }}</p>
+                <p class="text-secondary">Создан: {{ product.created_at|date:"d M Y" }}</p>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
                 <div>
-                    <h1>{{ product.name }}</h1>
-                    <p class="text-muted">{{ product.category.name }}</p>
-                    <h3 class="text-success">{{ product.price }} $</h3>
-                    <p>{{ product.description }}</p>
-                    <p class="text-secondary">Создан: {{ product.created_at|date:"d M Y" }}</p>
+                    <!-- Кнопка "Купить" для всех -->
+                    <a href="#" class="btn btn-primary">Купить</a>
+
+                    <!-- Если владелец -->
+                    {% if request.user == product.owner %}
+                        <a class="btn btn-outline-secondary" href="{% url 'catalog:catalog_update' product.pk %}">Редактировать</a>
+                        <a class="btn btn-danger" href="{% url 'catalog:catalog_delete' product.pk %}">Удалить</a>
+
+                    <!-- Если модератор (не владелец) -->
+                    {% elif perms.catalog.can_unpublish_product %}
+                        {% if product.is_published %}
+                            <form method="post" action="{% url 'catalog:product_unpublish' product.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning">Снять с публикации</button>
+                            </form>
+                        {% endif %}
+                        <a class="btn btn-danger" href="{% url 'catalog:catalog_delete' product.pk %}">Удалить</a>
+                    {% endif %}
                 </div>
-                <div class="container d-flex justify-content-between">
-                    <div>
-                        <a href="#" class="btn btn-primary">Купить</a>
-                        <a class="btn btn-outline-secondary" href="{% url 'catalog:catalog_update' product.pk%}">Редактировать</a>
-                        <a class="btn btn-danger" href="{% url 'catalog:catalog_delete' product.pk%}">Удалить</a>
-                    </div>
-                    <div>
-                        <a class="btn btn-outline-secondary" href="/">← Назад</a>
-                    </div>
-                </div>
+
+                <!-- Кнопка "Назад" -->
+                <a class="btn btn-outline-secondary" href="/">← Назад</a>
             </div>
         </div>
     </div>
