@@ -3,10 +3,24 @@ from .models import Product
 from .stopwords import stopwords
 
 
-class ProductForm(forms.ModelForm):
+class FormControlMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            if isinstance(field.widget, forms.CheckboxInput):
+                field.widget.attrs.update({'class': 'form-check-input'})
+            else:
+                field.widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder': field.label or name.capitalize()
+                })
+
+
+class ProductForm(FormControlMixin, forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('created_at', 'updated_at',)
+        fields = ('name', 'description', 'image', 'category', 'price', 'is_published')
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
@@ -27,10 +41,8 @@ class ProductForm(forms.ModelForm):
         return price
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите название продукта'})
-        self.fields['description'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Введите описание продукта'
-        })
-        self.fields['price'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите цену'})
+
+        if not user or not user.has_perm('catalog.can_unpublish_product'):
+            self.fields.pop('is_published', None)
