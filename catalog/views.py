@@ -4,6 +4,10 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.core.cache import cache
+from .services import ProductService
 
 from .models import Product
 from .forms import ProductForm
@@ -30,6 +34,7 @@ class CatalogListView(ListView):
         return [products[i:i + 4] for i in range(0, len(products), 4)]
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class CatalogDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "catalog/product.html"
@@ -90,4 +95,21 @@ class CatalogDeleteView(LoginRequiredMixin, CreatorOrPermRequiredMixin, DeleteVi
     template_name = "catalog/catalog_confirm_delete.html"
     success_url = reverse_lazy('catalog:catalog_list')
     permission_required = 'catalog.delete_product'
+
+
+class CategoryListView(ListView):
+    model = Product
+    template_name = "catalog/products_by_category.html"
+    context_object_name = "category_products"
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('pk')
+        key = f'category_products_{category_id}'
+
+        queryset = cache.get(key)
+        if not queryset:
+            queryset = ProductService.get_products_by_category(category_id)
+            cache.set(key, queryset, 60 * 15)
+
+        return [queryset[i:i + 4] for i in range(0, len(queryset), 4)]
 
