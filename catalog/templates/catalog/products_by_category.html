@@ -2,19 +2,15 @@
 
 {% block title %}
     <h1 class="display-4">Skystore</h1>
-    <p class="lead">Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели продать</p>
+    <p class="lead">Категория {{ category_products.0.0.category.name }}</p>
 {% endblock %}
 
 {% load static %}
-{% block content%}
-    {% if user.is_authenticated %}
-    <div class="container mb-5">
-        <a class="btn btn-primary" href={% url 'catalog:catalog_create'%}> Создать новый продукт </a>
-    </div>
-    {% endif %}
-
+{% block content %}
 <div class="container">
-    {% for row in rows %}
+    <a href="{% url 'catalog:catalog_list' %}" class="btn btn-secondary mb-3">← Назад</a>
+
+    {% for row in category_products %}
         <div class="row text-center">
             {% for product in row %}
                 <div class="col-3">
@@ -32,10 +28,6 @@
                             <img src="{% static 'img/default_photo.png' %}" class="card-img-top" alt="Нет изображения">
                         {% endif %}
                         <div class="card-body">
-                            <a href="{% url 'catalog:products_by_category' product.category.pk %}"
-                               class="badge rounded-pill bg-light text-dark border category-badge text-decoration-none">
-                                {{ product.category.name }}
-                            </a>
                             <h1 class="card-title pricing-card-title">{{ product.price }}$</h1>
                             <p class="card-text">{{ product.description|truncatechars:100 }}</p>
                             <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
@@ -47,4 +39,3 @@
     {% endfor %}
 </div>
 {% endblock %}
-
